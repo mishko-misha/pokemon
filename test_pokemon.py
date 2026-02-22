@@ -8,6 +8,11 @@ def test_get_pokemon_info_with_mock(pokemon_service, pikachu_info):
         assert result["id"] == 25
         assert result["types"][0]["type"]["name"] == "electric"
 
+def test_get_pokemon_info_not_found(pokemon_service):
+    with patch.object(PokemonService, "get_pokemon_info", return_value=None):
+        result = pokemon_service.get_pokemon_info("unknown-pokemon")
+        assert result is None
+
 def test_report_generation_with_mock_translation(report_generator, pikachu_info):
     translated_name = "Pikachu-FR"
 
@@ -18,3 +23,8 @@ def test_report_generation_with_mock_translation(report_generator, pikachu_info)
             output_pdf="test_report.pdf"
         )
         mock_pdf.assert_called_once()
+
+def test_translator(translator, mock_google_translate):
+    with patch("pokemon_name_translator.PokemonNameTranslator.translate", return_value="Pikachu-FR"):
+        result = translator.translate("Pikachu", target_language="fr")
+        assert result == "Pikachu-FR"

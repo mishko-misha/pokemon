@@ -1,8 +1,6 @@
 import sys
 from unittest.mock import MagicMock
 
-import pdfkit
-
 mock_translate = MagicMock()
 sys.modules["google.cloud.translate"] = mock_translate
 mock_translate.Client.return_value.translate.return_value = {"translatedText": "Pikachu-FR"}
@@ -10,10 +8,6 @@ mock_translate.Client.return_value.translate.return_value = {"translatedText": "
 from pokemon_name_translator import PokemonNameTranslator
 from pokemon_report import PokemonReport
 from pokemon_service import PokemonService
-
-pdfkit.configuration = lambda **kwargs: MagicMock()
-pdfkit.from_file = lambda *args, **kwargs: True
-pdfkit.from_string = lambda *args, **kwargs: True
 
 import pytest
 
@@ -48,5 +42,5 @@ def translator():
     return PokemonNameTranslator()
 
 @pytest.fixture
-def report_generator(tmp_path):
+def report_generator():
     return PokemonReport()
