@@ -24,7 +24,7 @@ def test_report_generation_with_mock_translation(report_generator, pikachu_info)
         )
         mock_pdf.assert_called_once()
 
-def test_translator(translator, mock_google_translate):
+def test_translator(translator):
     with patch("pokemon_name_translator.PokemonNameTranslator.translate", return_value="Pikachu-FR"):
         result = translator.translate("Pikachu", target_language="fr")
         assert result == "Pikachu-FR"
